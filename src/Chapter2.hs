@@ -337,7 +337,8 @@ ghci> :l src/Chapter2.hs
 -}
 subList :: Int -> Int -> [a] -> [a]
 subList start end list 
-    | start > end || end > length list = []
+    | start < 0 || start > end = []
+    | end > length list = list
     | otherwise = drop start (take (end + 1) list)
 
 {- |
@@ -351,6 +352,7 @@ Implement a function that returns only the first half of a given list.
 "b"
 -}
 -- PUT THE FUNCTION TYPE IN HERE
+firstHalf :: [a] -> [a]
 firstHalf l = take half l
     where
       half = div (length l) 2
@@ -864,7 +866,7 @@ list.
 -}
 rotate :: Int -> [Int] -> [Int]
 rotate t x 
-    | t < 1 = []
+    | t < 0 = []
     | otherwise = take lenTake (drop lenDrop (cycle x))
     where
       lenTake = length x
