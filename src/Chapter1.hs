@@ -522,7 +522,7 @@ branches because it is an expression and it must always return some value.
   satisfying the check will be returned and, therefore, evaluated.
 -}
 closestToZero :: Int -> Int -> Int
-closestToZero x y = if (abs x) < (abs y) then x else y
+closestToZero x y = if abs x < abs y then x else y
 
 
 {- |
@@ -556,13 +556,12 @@ value after "=" where the condition is true.
 Casual reminder about adding top-level type signatures for all functions :)
 -}
 isBetween :: Int -> Int -> Int -> Bool
-isBetween middle upper lower = ((middle > lower) && (middle < upper))
+isBetween middle upper lower = (middle > lower) && (middle < upper)
 
 mid :: Int -> Int -> Int -> Int
 mid x y z
-    | (isBetween y x z) || (isBetween y z x) = y
-    | (isBetween x y z) || (isBetween x z y) = x
-    | (isBetween z x y) || (isBetween z y x) = z
+    | isBetween y x z || isBetween y z x = y
+    | isBetween z x y || isBetween z y x = z
     | otherwise = x
 
 {- |
@@ -650,9 +649,8 @@ specifying complex expressions.
 -}
 sumLast2 :: Int -> Int
 sumLast2 n = 
-    let absValue = abs n
-        singleDigit = mod absValue 10
-        tenDigit = div ((mod absValue 100)) 10
+    let (div10, singleDigit) = divMod (abs n) 10
+        tenDigit = mod div10 10
     in singleDigit + tenDigit
 
 {- |
