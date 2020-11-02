@@ -630,17 +630,16 @@ Write a function that takes elements of a list only on even positions.
 >>> takeEven [2, 1, 3, 5, 4]
 [2,3,4]
 -}
-isEven :: Int -> Bool
-isEven n = (mod n 2) == 0
-
 takeEven :: [Int] -> [Int]
-takeEven n = go n 0 []
+takeEven n = go n True []
     where
-      go :: [Int] -> Int -> [Int] -> [Int]
+      go :: [Int] -> Bool -> [Int] -> [Int]
       go [] _ result = result
-      go (x : xs) index result =
-          let newResult = if isEven index then (result ++ [x]) else result
-          in go xs (index + 1) newResult
+      go (_:xs) False result =  go xs True result
+      go (x:xs) True result =  go xs False newResult
+          where
+            newResult = result ++ [x]
+
 
 {- |
 =🛡= Higher-order functions
