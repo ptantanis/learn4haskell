@@ -385,27 +385,19 @@ data Fighter = Fighter {
   , fighterGold :: Int
 }
 
-isDefeated :: Fighter -> Bool
-isDefeated fighter = fighterAttack fighter > 0 
+attackFatal :: Fighter -> Fighter -> Bool
+attackFatal atk def
+    | health - attack <= 0 = True 
+    | otherwise = False
+    where 
+      health = fighterHealth def
+      attack = fighterAttack atk 
 
-attack :: Fighter -> Fighter -> Fighter
-attack atk def =
-    let health = fighterHealth def
-        attack = fighterAttack atk 
-    in  def { fighterHealth = health - attack}
-
-data Knight = Knight {
-  knightFighter :: Fighter
-}
-
-data Monster = Monster {
-  monsterFighter :: Fighter
-}
-
--- fight :: Knight -> Monster -> Int
--- fight knight monster = 
---     where
---       monster2 = 
+fight :: Fighter -> Fighter -> Int
+fight knight monster
+    | attackFatal knight monster = fighterGold monster + fighterGold knight
+    | attackFatal monster knight = -1
+    | otherwise = fighterGold knight
 
 
 {- |

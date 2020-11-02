@@ -17,9 +17,10 @@ chapter3 = describe "Chapter3" $ do
             , fighterAttack = 100
             , fighterGold = 100
         }
-        describe "isDefeated" $ do
-            it "False when health more than 0" $ isDefeated myFighter `shouldBe` True
-            it "True when health is 0" $ isDefeated myFighter { fighterHealth = 0  } `shouldBe` True
-            it "True when health less than 0" $ isDefeated myFighter { fighterHealth = -1  } `shouldBe` True
-        describe "attack" $ do
-            it "got fighter with reduced health" $ fighterHealth (attack myFighter myFighter) `shouldBe` 0
+        describe "attackFatal" $ do
+            it "got True when attacked and died" $ attackFatal myFighter myFighter `shouldBe` True
+            it "got False when attacked and still alive" $ attackFatal myFighter myFighter { fighterHealth = 200 } `shouldBe` False
+        describe "fight" $ do
+            it "got combined tressure, when knight wins" $ fight myFighter myFighter `shouldBe` 200
+            it "got -1, when knight losses" $ fight myFighter myFighter { fighterHealth = 200 } `shouldBe` -1
+            it "got knight's tressure, when no winner" $ fight myFighter { fighterHealth = 200 } myFighter { fighterHealth = 200 } `shouldBe` 100
