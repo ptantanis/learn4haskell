@@ -486,6 +486,12 @@ Create a simple enumeration for the meal types (e.g. breakfast). The one who
 comes up with the most number of names wins the challenge. Use your creativity!
 -}
 
+data MealType
+  = Breakfast
+  | Brunch
+  | Lunch
+  | Dinner
+
 {- |
 =⚔️= Task 4
 
@@ -505,6 +511,54 @@ After defining the city, implement the following functions:
    complicated task, walls can be built only if the city has a castle
    and at least 10 living __people__ inside in all houses of the city totally.
 -}
+
+data City = City {
+  cityCastle :: CastleOrNothing
+  , cityWall :: Bool
+  , cityBuilding :: Building
+  , cityHouses :: [House]
+}
+
+data CastleOrNothing 
+  = Castle String 
+  | NoCastle
+  
+castleName :: CastleOrNothing -> String
+castleName c = case c of
+    Castle name -> name
+    NoCastle -> "No castle!"
+
+data House = House {
+  housePopulation :: HousePopulation
+}
+
+data Building = Library | Church
+
+cityPopulation :: City -> Int
+cityPopulation city = go (cityHouses city) 0
+    where
+      go :: [House] -> Int -> Int
+      go [] count = count
+      go (x:xs) count = go xs (count + housePopulationValue (housePopulation x))
+
+buildCastle :: String -> City -> City
+buildCastle name city = city { cityCastle = Castle name }
+
+data HousePopulation = One | Two | Three | Four
+housePopulationValue :: HousePopulation -> Int
+housePopulationValue hp = case hp of
+    One -> 1
+    Two -> 2
+    Three -> 3
+    Four -> 4
+
+buildHouse :: HousePopulation -> City -> City
+buildHouse num city = city { cityHouses = House { housePopulation = num }:(cityHouses city)}
+
+buildWall :: City -> City
+buildWall city = case cityCastle city of
+    NoCastle -> city
+    Castle _ -> if cityPopulation city < 10 then city else city { cityWall = True }
 
 {-
 =🛡= Newtypes
