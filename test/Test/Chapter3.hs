@@ -49,3 +49,8 @@ chapter3 = describe "Chapter3" $ do
             it "do not destroy existed wall" $ cityWall (buildWall myCity { cityWall = True }) `shouldBe` True
             it "when no castle, should not build wall" $ cityWall (buildWall canBuildWallCity { cityCastle = NoCastle }) `shouldBe` False
             it "when not enough population, should not build wall" $ cityWall (buildWall canBuildWallCity { cityHouses = [myHouse, myHouse, House { housePopulation = One }] }) `shouldBe` False
+        describe "Append" $do
+            it "should added Gold value" $ unGold (append (Gold 1) (Gold 2)) `shouldBe` 3
+            it "should concatenate List" $ length (append ["1"] ["2"]) `shouldBe` 2
+            it "should got Nothing when append Nothing" $  append Nothing (Just "") `shouldBe` Nothing
+            it "should got result when append Maybe" $  append (Just "a") (Just "b") `shouldBe` Just "ab"
