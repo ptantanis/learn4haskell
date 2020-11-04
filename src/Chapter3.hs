@@ -1087,6 +1087,29 @@ implement the following functions:
 🕯 HINT: to implement this task, derive some standard typeclasses
 -}
 
+data DayOfWeek 
+    = Sun
+    | Mon 
+    | Tue 
+    | Wed 
+    | Thu 
+    | Fri 
+    | Sat deriving (Show, Read, Eq, Ord, Enum)
+
+isWeekend :: DayOfWeek -> Bool
+isWeekend Sat = True
+isWeekend Sun = True
+isWeekend _ = False 
+
+nextDay :: DayOfWeek -> DayOfWeek
+nextDay Sat = Sun
+nextDay d = toEnum ((fromEnum d) + 1)
+
+dayToParty :: DayOfWeek -> Int
+dayToParty Sat = 6
+dayToParty d = fromEnum Fri - fromEnum d
+
+
 {-
 =💣= Task 9*
 
@@ -1121,6 +1144,25 @@ properties using typeclasses, but they are different data types in the end.
 Implement data types and typeclasses, describing such a battle between two
 contestants, and write a function that decides the outcome of a fight!
 -}
+
+-- class Fighter a where
+--     attack :: a -> Attack
+--     defence :: a -> Defence
+--     health :: a -> Health
+
+-- instance Fighter Knight where
+--     attack :: Knight -> Attack
+--     attack k = knightAttack k
+
+
+-- data Knight = Knight {
+--   knightHealth :: Health
+--   knightAttack :: Attack
+--   knightDefence :: Defence
+-- }
+
+
+
 
 
 {-
