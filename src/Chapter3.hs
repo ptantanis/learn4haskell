@@ -1177,7 +1177,6 @@ data Monster = Monster {
   , monsterAttack :: Attack
 }
 
--- duel :: Fighter -> Fighter -> String
 
 
 
