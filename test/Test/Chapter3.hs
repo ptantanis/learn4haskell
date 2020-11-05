@@ -67,3 +67,20 @@ chapter3 = describe "Chapter3" $ do
             it "given Wed, return 2" $ dayToParty Wed `shouldBe` 2
             it "given Sun, return 5" $ dayToParty Sun `shouldBe` 5
             it "given Sat, return 6" $ dayToParty Sat `shouldBe` 6
+    describe "Grand Fighting" $ do
+        describe "Knight" $ do
+            let myKnight = Knight {
+                knightHealth = Health 100
+                , knightAttack = Attack 100
+                , knightDefense = Defense 10
+            }
+            describe "gotAttack" $ do
+                it "reduce knight's health by atk minus def" $ knightHealth (gotAttack (Attack 50) myKnight) `shouldBe` Health 60
+                it "not reduce knight's health when def more than atk" $ knightHealth (gotAttack (Attack 10) myKnight) `shouldBe` Health 100
+        describe "Monster" $ do
+            let myMons = Monster {
+                monsterHealth = Health 100
+                , monsterAttack = Attack 100
+            }
+            it "gotAttack, reduce health" $ monsterHealth (gotAttack (Attack 50) myMons) `shouldBe` Health 50
+        

@@ -641,7 +641,7 @@ introducing extra newtypes.
     implementation of the "hitPlayer" function at all!
 -}
 
-newtype Health = Health { unHealth :: Int } 
+newtype Health = Health { unHealth :: Int } deriving (Show, Eq)
 newtype Armor = Armor { unArmor :: Int }
 newtype Attack = Attack { unAttack :: Int }
 newtype Dexterity = Dexterity { unDexterity :: Int }
@@ -1145,21 +1145,39 @@ Implement data types and typeclasses, describing such a battle between two
 contestants, and write a function that decides the outcome of a fight!
 -}
 
--- class Fighter a where
---     attack :: a -> Attack
---     defence :: a -> Defence
---     health :: a -> Health
+class GrandFighter a where
+  gotAttack :: Attack -> a -> a
 
--- instance Fighter Knight where
---     attack :: Knight -> Attack
---     attack k = knightAttack k
+instance GrandFighter Knight where
+  gotAttack :: Attack -> Knight -> Knight
+  gotAttack atk k = k { knightHealth = Health (unHealth health - calculatedKnightDamage atk def) }
+    where
+      health = knightHealth k
+      def = knightDefense k
 
+calculatedKnightDamage :: Attack -> Defense -> Int
+calculatedKnightDamage atk def
+    | unDefense def >= unAttack atk = 0
+    | otherwise = unAttack atk - unDefense def
 
--- data Knight = Knight {
---   knightHealth :: Health
---   knightAttack :: Attack
---   knightDefence :: Defence
--- }
+instance GrandFighter Monster where
+  gotAttack :: Attack -> Monster -> Monster
+  gotAttack atk m = m { monsterHealth = Health (unHealth health - unAttack atk) }
+    where
+      health = monsterHealth m
+
+data Knight = Knight {
+  knightHealth :: Health
+  , knightAttack :: Attack
+  , knightDefense :: Defense
+}
+
+data Monster = Monster {
+  monsterHealth :: Health
+  , monsterAttack :: Attack
+}
+
+-- duel :: Fighter -> Fighter -> String
 
 
 
